@@ -5,9 +5,9 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 4.0f;
+private float _speed = 4.0f;
     // Start is called before the first frame update
-    void Start()
+     void Start()
     {
         
     }
@@ -21,6 +21,26 @@ public class Enemy : MonoBehaviour
       {
         float randomX = Random.Range(-8f, 8f);
         transform.position = new Vector3(randomX, 7, 0);
+      }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+      if (other.tag == "Player")
+      {
+       Player player = other.transform.GetComponent<Player>();
+
+       if (player != null)
+       {
+        player.Damage();
+       }
+       
+        Destroy(this.gameObject);
+      }
+      
+      if (other.tag == "laser")
+      {
+        Destroy(other.gameObject);
+        Destroy(this.gameObject);
       }
     }
 }

@@ -23,15 +23,23 @@ public class Player : MonoBehaviour
   private bool _isShieldActive = false;
   [SerializeField]
   private GameObject _shieldVisualizer;
+  [SerializeField]
+  private int _score;
+  private UIManager _uiManager;
 
     void Start()
     {
       transform.position = new Vector3 (0, 0, 0);
      _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
-
+      _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
       if (_spawnManager == null)
       {
         Debug.LogError("The Spawn Manager is Null");
+      }
+
+      if(_uiManager == null)
+      {
+          Debug.LogError("The UI Manager is NULL.");
       }
 
     }
@@ -96,10 +104,6 @@ void FireLaser()
 
 public void Damage()
   {
-    //if shield is active
-    //do nothing
-    //deactivate shield
-    //return; 
     if (_isShieldActive == true)
     {
        _isShieldActive = false;
@@ -149,4 +153,9 @@ public void Damage()
     _shieldVisualizer.SetActive(true);
   }
   
+  public void AddScore(int points)
+  {
+    _score += points;
+    _uiManager.UpdateScore(_score);
+  }
 }

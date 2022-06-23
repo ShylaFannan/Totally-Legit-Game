@@ -112,6 +112,7 @@ public void Damage()
     }
 
      _lives--;
+     _uiManager.UpdateLives(_lives);
    
     if (_lives < 1)
     {

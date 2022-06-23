@@ -8,6 +8,10 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField]
     private TMP_Text _scoreText;
+    [SerializeField]
+    private Image _LivesImg;
+    [SerializeField]
+    private Sprite[] _liveSprites;
   
     void Start()
     {
@@ -17,5 +21,12 @@ public class UIManager : MonoBehaviour
     public void UpdateScore(int playerScore)
     {
         _scoreText.text = "Score:" + playerScore.ToString();
+    }
+
+    public void UpdateLives(int currentLives)
+    {
+
+        _LivesImg.sprite = _liveSprites[currentLives];
+        //display img sprite = current amount of lives 0-3
     }
 }

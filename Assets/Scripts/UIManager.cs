@@ -9,6 +9,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TMP_Text _scoreText;
     [SerializeField]
+    private TMP_Text _gameOverText;
+    [SerializeField]
     private Image _LivesImg;
     [SerializeField]
     private Sprite[] _liveSprites;
@@ -16,6 +18,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         _scoreText.text = "Score:" + 0;
+        _gameOverText.gameObject.SetActive(false);
     }
 
     public void UpdateScore(int playerScore)
@@ -28,5 +31,10 @@ public class UIManager : MonoBehaviour
 
         _LivesImg.sprite = _liveSprites[currentLives];
         //display img sprite = current amount of lives 0-3
+
+        if (currentLives == 0)
+        {
+            _gameOverText.gameObject.SetActive(true);
+        }
     }
 }

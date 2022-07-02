@@ -8,6 +8,8 @@ public class Powerup : MonoBehaviour
     private float _speed = 3.0f;
     [SerializeField]//ID FOR POWERUPS 0=trip shot 1=speed 2=shield
     private int powerupID;
+    [SerializeField]
+    private AudioClip _clip;
 
     void Update()
     {
@@ -15,7 +17,7 @@ public class Powerup : MonoBehaviour
 
         if (transform.position.y < -6f) 
         {
-           Destroy(this.gameObject);
+            Destroy(this.gameObject);
         } 
     }
 
@@ -24,6 +26,8 @@ public class Powerup : MonoBehaviour
         if (other.tag == "Player")
         {
             Player player = other.transform.GetComponent<Player>();
+
+            AudioSource.PlayClipAtPoint(_clip, transform.position);
             if (player != null)
             {
                 switch(powerupID)
@@ -42,7 +46,7 @@ public class Powerup : MonoBehaviour
                         break;
                 }
             }
-            
+
             Destroy(this.gameObject);
         }
     }

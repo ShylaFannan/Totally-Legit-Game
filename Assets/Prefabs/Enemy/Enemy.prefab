@@ -50,6 +50,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 2
+  _laserPrefab: {fileID: 562588126035480602, guid: 57b96e6a89e1b674d859c92e3fe71c17, type: 3}
+  _laserSoundClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
 --- !u!212 &534450928031898957
 SpriteRenderer:
   m_ObjectHideFlags: 0

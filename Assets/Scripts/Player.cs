@@ -30,6 +30,8 @@ public class Player : MonoBehaviour
   [SerializeField]
   private AudioClip _laserSoundClip;
   private AudioSource _audioSource;
+  [SerializeField]
+  private float _fastSpeed = 7f;
 
   void Start()
   {
@@ -75,7 +77,15 @@ public class Player : MonoBehaviour
     float horizontalInput = Input.GetAxis("Horizontal");
     float verticalInput = Input. GetAxis("Vertical");
     Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
-    transform.Translate (direction * _speed * Time.deltaTime);
+
+    if (Input.GetKey(KeyCode.LeftShift))
+    {
+      transform.Translate (direction * _fastSpeed * Time.deltaTime);
+    }
+    else
+    {
+      transform.Translate (direction * _speed * Time.deltaTime);
+    }
 
     if (transform.position.y>=0)
     {

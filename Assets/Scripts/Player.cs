@@ -23,6 +23,9 @@ public class Player : MonoBehaviour
   [SerializeField]
   private GameObject _shieldVisualizer;
   [SerializeField]
+  private int _shieldLife;
+  SpriteRenderer _shieldColor;
+  [SerializeField]
   private int _score;
   private UIManager _uiManager;
   [SerializeField]
@@ -32,6 +35,11 @@ public class Player : MonoBehaviour
   private AudioSource _audioSource;
   [SerializeField]
   private float _fastSpeed = 7f;
+  [SerializeField]
+  private int _currentAmmo; //how much ammo player currently has
+  [SerializeField]
+  private int _maxAmmo = 15; //how much ammo player can possibly get
+  private int _minAmmo = 0; //can't shoot when reach this number
 
   void Start()
   {
@@ -39,6 +47,8 @@ public class Player : MonoBehaviour
     _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
     _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
     _audioSource = GetComponent<AudioSource>();
+    _shieldColor = _shieldVisualizer.GetComponent<SpriteRenderer>();
+    _currentAmmo = _maxAmmo;
 
     if (_spawnManager == null)
     {
@@ -110,28 +120,51 @@ public class Player : MonoBehaviour
 
   void FireLaser()
   {
-    _canFire = Time.time + _fireRate;
+    _canFire = Time.time + _fireRate; //canfire equals the time the game has been running plus fire rate
 
-    if (_isTripleShotActive == true)
+    if (_isTripleShotActive == true && _currentAmmo > _minAmmo) //is triple shot active and current ammo is greater than 0?
     {
-      Instantiate(_tripleShotPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+      Instantiate(_tripleShotPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity); //create triple shot 
+      _audioSource.Play();
+    }
+    else if (_currentAmmo > _minAmmo) //trip shot not active but is current ammo greater than 0?
+    {
+      Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity); //create regular laser
+      _audioSource.Play();
+    }
+    else //if current ammo is less than 0, log this message
+    {
+      Debug.Log("Player is out of Ammo");
     }
 
-    else
-    {
-      Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
-    }
-    
-    _audioSource.Play();
+    _currentAmmo --; //minus 1 ammo each time this is called
+
+    int _AmmoClamp = Mathf.Clamp(_currentAmmo, _minAmmo, _maxAmmo); //current ammo can't be more or less than max/min
+    _currentAmmo = _AmmoClamp;
+    _uiManager.UpdateAmmo(_currentAmmo); //get current ammo from UIManager script
   }
 
   public void Damage()
   {
     if (_isShieldActive == true)
     {
-      _isShieldActive = false;
-      _shieldVisualizer.SetActive(false);
-      return;
+      _shieldLife --;
+
+      if(_shieldLife == 0)
+      {
+        _isShieldActive = false;
+        _shieldVisualizer.SetActive(false);
+        return;
+      }
+      else if (_shieldLife == 1)
+      {
+        _shieldColor.color = Color.green;
+      }
+      else if (_shieldLife == 2)
+      {
+        _shieldColor.color = Color.cyan;
+        return; 
+      }
     }
 
     _lives--;
@@ -169,7 +202,6 @@ public class Player : MonoBehaviour
 
   public void SpeedBoostActive()
   {
-    //_isSpeedBoostActive = true;
     _speed *= _speedMultiplier;
     StartCoroutine(SpeedBoostPowerDownRoutine());
   }
@@ -177,16 +209,32 @@ public class Player : MonoBehaviour
   IEnumerator SpeedBoostPowerDownRoutine()
   {
     yield return new WaitForSeconds(5.0f);
-   // _isSpeedBoostActive = false;
     _speed /= _speedMultiplier;
   }
 
   public void ShieldsActive()
   {
-    _isShieldActive = true;
-    _shieldVisualizer.SetActive(true);
+    if(_shieldLife < 3)
+    {
+      _shieldLife ++;
+      _isShieldActive = true;
+      _shieldVisualizer.SetActive(true);
+    }
+
+    if(_shieldLife == 1)
+    {
+      _shieldColor.color = Color.green;
+    }
+    else if(_shieldLife == 2)
+    {
+      _shieldColor.color = Color.cyan;
+    }
+    else if(_shieldLife == 3)
+    {
+      _shieldColor.color = Color.red;
+    }
   }
-  
+
   public void AddScore(int points)
   {
     _score += points;

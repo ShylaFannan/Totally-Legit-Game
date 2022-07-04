@@ -18,13 +18,16 @@ public class UIManager : MonoBehaviour
     private TMP_Text _restartText;
     [SerializeField]
     private GameManager _gameManager;
-  
+    [SerializeField]
+    private TMP_Text _AmmoText;
+
     void Start()
     {
         _scoreText.text = "Score:" + 0;
         _gameOverText.gameObject.SetActive(false);
         _restartText.gameObject.SetActive(false);
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
+        _AmmoText.text = "Ammo:" + 15; //start of game Ammo is 15
 
         if(_gameManager == null)
         {
@@ -46,6 +49,11 @@ public class UIManager : MonoBehaviour
         {
             GameOverSequence();
         }
+    }
+
+    public void UpdateAmmo(int currentAmmo) //updates current ammo text
+    {
+        _AmmoText.text = "Ammo:" + currentAmmo.ToString(); //gets current ammo from player and add it to our counter
     }
 
     void GameOverSequence()

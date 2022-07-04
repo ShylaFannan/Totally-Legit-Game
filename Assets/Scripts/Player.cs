@@ -40,6 +40,8 @@ public class Player : MonoBehaviour
   [SerializeField]
   private int _maxAmmo = 15; //how much ammo player can possibly get
   private int _minAmmo = 0; //can't shoot when reach this number
+  [SerializeField]
+  private GameObject _ammoCollectPrefab;
 
   void Start()
   {
@@ -235,6 +237,33 @@ public class Player : MonoBehaviour
     }
   }
 
+  public void addAmmo()
+  {
+    _currentAmmo = 15;
+    _uiManager.UpdateAmmo(_currentAmmo); //get current ammo from UIManager script
+  }
+
+  public void Plus1Life()
+  {
+    if(_lives == 3)
+    {
+      Debug.Log("Lives at MAX");
+      return;
+    }
+
+    _lives ++;
+    _uiManager.UpdateLives(_lives);
+
+    if(_lives == 3)
+    {
+      _leftEngine.SetActive(false);
+    }
+    else if(_lives == 2)
+    {
+      _rightEngine.SetActive(false);
+    }
+  }
+  
   public void AddScore(int points)
   {
     _score += points;

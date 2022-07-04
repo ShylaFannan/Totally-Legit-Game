@@ -404,6 +404,7 @@ MonoBehaviour:
   _fastSpeed: 7
   _currentAmmo: 0
   _maxAmmo: 15
+  _ammoCollectPrefab: {fileID: 0}
 --- !u!212 &202210584
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1914,6 +1915,8 @@ MonoBehaviour:
   - {fileID: 7767308649833129233, guid: 3a2857b90c951284ebf91aa6f2e70b94, type: 3}
   - {fileID: 8622717769392456489, guid: 83713055d726ddc4cb3ed8b99bd3a161, type: 3}
   - {fileID: 9078040458791416893, guid: 04ffa029d2ce6dc458773f467bb05961, type: 3}
+  - {fileID: 378935312754630038, guid: 3f44c91ac02c4a74eb36f6042c66c83b, type: 3}
+  - {fileID: 1138761868133599608, guid: df09112d52141e64fb4f42d737c29daf, type: 3}
 --- !u!4 &1753299694
 Transform:
   m_ObjectHideFlags: 0

@@ -20,9 +20,8 @@ public class UIManager : MonoBehaviour
     private GameManager _gameManager;
     [SerializeField]
     private TMP_Text _AmmoText;
-    private float _thrusterPower;
     [SerializeField]
-    private Image _thrusterPowerBar;
+    private Slider _thrusterSlider;
 
     void Start()
     {
@@ -38,6 +37,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void UpdateThrusterFuel(float value)
+    {
+        _thrusterSlider.value = value;
+    }
     public void UpdateScore(int playerScore)
     {
         _scoreText.text = "Score:" + playerScore.ToString();

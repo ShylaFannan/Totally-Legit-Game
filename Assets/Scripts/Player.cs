@@ -8,8 +8,12 @@ public class Player : MonoBehaviour
   private float _speed = 3.5f;
   [SerializeField]
   private float _speedMultiplier = 3f;
+
+  private float _extraSpeed = 0f;
   [SerializeField]
   private GameObject _thruster;
+  private float _fuel = 100f;
+  private bool _fuelCooldownActive = false;
 
   [SerializeField]
   private GameObject _laserPrefab;
@@ -91,9 +95,6 @@ public class Player : MonoBehaviour
     {
       FireLaser();
     }
-    {
-      Thrusters();
-    }
   }
 
   void CalculateMovement()
@@ -101,13 +102,30 @@ public class Player : MonoBehaviour
     float horizontalInput = Input.GetAxis("Horizontal");
     float verticalInput = Input. GetAxis("Vertical");
     Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
-    transform.Translate (direction * _speed * Time.deltaTime);
+    transform.Translate (direction * (_speed + _extraSpeed) * Time.deltaTime);
+
+    if(Input.GetKey(KeyCode.LeftShift) && !_fuelCooldownActive)
+    {
+      if (_fuel > 0)
+      {
+        _thruster.SetActive(true);
+        _extraSpeed = 3.5f;
+        _fuel -= 15 * Time.deltaTime;
+      }
+      else
+      {
+        _fuel = 0;
+        _thruster.SetActive(false);
+        _extraSpeed = 0f;
+        StartCoroutine(ThrusterCoolDownRoutine());
+      }
+      _uiManager.UpdateThrusterFuel(_fuel);
+    }
 
     if (transform.position.y>=0)
     {
       transform.position = new Vector3(transform.position.x,0,0);
     }
-
     else if (transform.position.y<=-3.8f)
     {
       transform.position = new Vector3(transform.position.x,0,0);
@@ -117,29 +135,31 @@ public class Player : MonoBehaviour
     {
       transform.position = new Vector3(-11.3f, transform.position.y, 0);
     }
-
     else if (transform.position.x <-11.3f)
     {
       transform.position = new Vector3(11.3f, transform.position.y, 0);
     }
   }
 
-  void Thrusters()
+IEnumerator ThrusterCoolDownRoutine()
+{
+  yield return new WaitForSeconds(3f);
+  _fuelCooldownActive = true;
+
+  while(true)
   {
-    if (Input.GetKey(KeyCode.LeftShift))
-      {
-        if(_thruster != null) 
-        { 
-          _speed = 8f;
-          _thruster.SetActive(true);
-        }
-      }
-        else
-        {
-          _speed = 5.5f;
-          _thruster.SetActive(false);
-        }
+    _fuel += 15 * Time.deltaTime;
+
+    if (_fuel >= 100f)
+    {
+      _fuelCooldownActive = false;
+      break;
     }
+
+    _uiManager.UpdateThrusterFuel(_fuel);
+    yield return new WaitForSeconds(15 * Time.deltaTime);
+  }
+}
 
   void FireLaser()
   {
@@ -169,7 +189,7 @@ public class Player : MonoBehaviour
 
     int _AmmoClamp = Mathf.Clamp(_currentAmmo, _minAmmo, _maxAmmo); //current ammo can't be more or less than max/min
     _currentAmmo = _AmmoClamp;
-    _uiManager.UpdateAmmo(_currentAmmo); //get current ammo from UIManager script
+    _uiManager.UpdateAmmo(_currentAmmo); //get current ammo from UIManager script 
   }
 
   public void Damage()

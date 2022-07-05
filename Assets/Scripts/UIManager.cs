@@ -20,6 +20,9 @@ public class UIManager : MonoBehaviour
     private GameManager _gameManager;
     [SerializeField]
     private TMP_Text _AmmoText;
+    private float _thrusterPower;
+    [SerializeField]
+    private Image _thrusterPowerBar;
 
     void Start()
     {

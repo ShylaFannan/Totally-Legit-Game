@@ -6,11 +6,14 @@ public class Enemy : MonoBehaviour
 {
   [SerializeField]
   private float _speed = 4.0f;
+  
   [SerializeField]
   private GameObject _laserPrefab;
   private float _fireRate = 3.0f;
   private float _canFire = -1;
+
   private Player _player;
+
   private Animator _anim;
   private AudioSource _audioSource; 
 

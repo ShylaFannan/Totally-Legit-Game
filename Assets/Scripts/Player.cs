@@ -7,24 +7,30 @@ public class Player : MonoBehaviour
   [SerializeField]
   private float _speed = 3.5f;
   [SerializeField]
-  private float _speedMultiplier = 2;
+  private float _speedMultiplier = 3f;
+  [SerializeField]
+  private GameObject _thruster;
+
   [SerializeField]
   private GameObject _laserPrefab;
   [SerializeField]
-  private GameObject _tripleShotPrefab; 
+  private GameObject _tripleShotPrefab;
   [SerializeField]
-  private float _fireRate = 0.25f;
-  private float _canFire = -1f;
-  [SerializeField]
-  private int _lives = 3;
-  private SpawnManager _spawnManager;
+  private GameObject _loveShotPrefab; 
+
   private bool _isTripleShotActive = false;
+  public bool _isLoveShotActive = false;
+
   private bool _isShieldActive = false;
   [SerializeField]
   private GameObject _shieldVisualizer;
   [SerializeField]
   private int _shieldLife;
   SpriteRenderer _shieldColor;
+
+  [SerializeField]
+  private int _lives = 3;
+  private SpawnManager _spawnManager;
   [SerializeField]
   private int _score;
   private UIManager _uiManager;
@@ -33,8 +39,11 @@ public class Player : MonoBehaviour
   [SerializeField]
   private AudioClip _laserSoundClip;
   private AudioSource _audioSource;
+
   [SerializeField]
-  private float _fastSpeed = 7f;
+  private float _fireRate = 0.25f;
+  private float _canFire = -1f;
+
   [SerializeField]
   private int _currentAmmo; //how much ammo player currently has
   [SerializeField]
@@ -82,6 +91,9 @@ public class Player : MonoBehaviour
     {
       FireLaser();
     }
+    {
+      Thrusters();
+    }
   }
 
   void CalculateMovement()
@@ -89,15 +101,7 @@ public class Player : MonoBehaviour
     float horizontalInput = Input.GetAxis("Horizontal");
     float verticalInput = Input. GetAxis("Vertical");
     Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
-
-    if (Input.GetKey(KeyCode.LeftShift))
-    {
-      transform.Translate (direction * _fastSpeed * Time.deltaTime);
-    }
-    else
-    {
-      transform.Translate (direction * _speed * Time.deltaTime);
-    }
+    transform.Translate (direction * _speed * Time.deltaTime);
 
     if (transform.position.y>=0)
     {
@@ -120,6 +124,23 @@ public class Player : MonoBehaviour
     }
   }
 
+  void Thrusters()
+  {
+    if (Input.GetKey(KeyCode.LeftShift))
+      {
+        if(_thruster != null) 
+        { 
+          _speed = 8f;
+          _thruster.SetActive(true);
+        }
+      }
+        else
+        {
+          _speed = 5.5f;
+          _thruster.SetActive(false);
+        }
+    }
+
   void FireLaser()
   {
     _canFire = Time.time + _fireRate; //canfire equals the time the game has been running plus fire rate
@@ -129,7 +150,12 @@ public class Player : MonoBehaviour
       Instantiate(_tripleShotPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity); //create triple shot 
       _audioSource.Play();
     }
-    else if (_currentAmmo > _minAmmo) //trip shot not active but is current ammo greater than 0?
+    else if(_isLoveShotActive == true && _currentAmmo > _minAmmo) //love shot is active and cur ammo more than 0
+    {
+      Instantiate(_loveShotPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity); //create love shot
+      _audioSource.Play();
+    }
+    else if (_currentAmmo > _minAmmo) //special shots not active but is current ammo greater than 0?
     {
       Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity); //create regular laser
       _audioSource.Play();
@@ -175,7 +201,6 @@ public class Player : MonoBehaviour
     {
       _leftEngine.SetActive(true);
     }
-
     else if(_lives == 1)
     {
       _rightEngine.SetActive(true);
@@ -201,6 +226,19 @@ public class Player : MonoBehaviour
     yield return new WaitForSeconds(5.0f);
     _isTripleShotActive = false;
   }
+
+  public void LoveShotActive()
+  {
+    _isLoveShotActive = true;
+    StartCoroutine(LoveShotPowerDownRoutine());
+  }
+
+  IEnumerator LoveShotPowerDownRoutine()
+  {
+    yield return new WaitForSeconds(5.0f);
+    _isLoveShotActive = false;
+  }
+
 
   public void SpeedBoostActive()
   {

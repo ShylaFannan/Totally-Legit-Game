@@ -326,6 +326,7 @@ RectTransform:
   - {fileID: 1446323367}
   - {fileID: 2134318071}
   - {fileID: 719356432}
+  - {fileID: 736854282}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -357,6 +358,7 @@ MonoBehaviour:
   _restartText: {fileID: 1446323368}
   _gameManager: {fileID: 534576208}
   _AmmoText: {fileID: 719356433}
+  _thrusterPowerBar: {fileID: 736854280}
 --- !u!1 &202210582
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,20 +393,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 3.5
   _speedMultiplier: 2
+  _fastSpeed: 7
+  _thruster: {fileID: 1355833374}
   _laserPrefab: {fileID: 5798895930810506990, guid: 1f71897031d6a7e40932d9adf8a806d8, type: 3}
   _tripleShotPrefab: {fileID: 1746938632204533163, guid: eb6d42aeaf40fd746a8c39815fd9b109, type: 3}
-  _fireRate: 0.25
-  _lives: 3
+  _loveShotPrefab: {fileID: 1073247592703550770, guid: f03c872ea393efb4dac9625f1b6dc63e, type: 3}
+  _isLoveShotActive: 0
   _shieldVisualizer: {fileID: 121124235}
   _shieldLife: 0
+  _lives: 3
   _score: 0
   _rightEngine: {fileID: 424580270}
   _leftEngine: {fileID: 1925051987}
   _laserSoundClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
-  _fastSpeed: 7
+  _fireRate: 0.25
   _currentAmmo: 0
   _maxAmmo: 15
-  _ammoCollectPrefab: {fileID: 0}
+  _ammoCollectPrefab: {fileID: 378935312754630038, guid: 3f44c91ac02c4a74eb36f6042c66c83b, type: 3}
 --- !u!212 &202210584
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1316,6 +1321,82 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 719356431}
   m_CullTransparentMesh: 1
+--- !u!1 &736854279
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 736854282}
+  - component: {fileID: 736854281}
+  - component: {fileID: 736854280}
+  m_Layer: 5
+  m_Name: ThrustBar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &736854280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736854279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0, b: 0.83145046, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: b030d335857201646be69703e678d6e5, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &736854281
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736854279}
+  m_CullTransparentMesh: 1
+--- !u!224 &736854282
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736854279}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.97349, y: 3.0435798, z: 0.97349}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 178656489}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -363, y: -4}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1537,11 +1618,11 @@ GameObject:
   - component: {fileID: 1355833376}
   m_Layer: 0
   m_Name: thruster
-  m_TagString: Untagged
+  m_TagString: thrust
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1355833375
 Transform:
   m_ObjectHideFlags: 0
@@ -1917,6 +1998,7 @@ MonoBehaviour:
   - {fileID: 9078040458791416893, guid: 04ffa029d2ce6dc458773f467bb05961, type: 3}
   - {fileID: 378935312754630038, guid: 3f44c91ac02c4a74eb36f6042c66c83b, type: 3}
   - {fileID: 1138761868133599608, guid: df09112d52141e64fb4f42d737c29daf, type: 3}
+  - {fileID: 5270899315832522683, guid: d9d29efd10ff8754da49ceb0721fb3d6, type: 3}
 --- !u!4 &1753299694
 Transform:
   m_ObjectHideFlags: 0

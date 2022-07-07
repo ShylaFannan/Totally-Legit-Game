@@ -56,6 +56,9 @@ public class Player : MonoBehaviour
   [SerializeField]
   private GameObject _ammoCollectPrefab;
 
+  private DizzyCam _cameraShake; //references camera gameobject
+
+
   void Start()
   {
     transform.position = new Vector3 (0, 0, 0);
@@ -64,6 +67,7 @@ public class Player : MonoBehaviour
     _audioSource = GetComponent<AudioSource>();
     _shieldColor = _shieldVisualizer.GetComponent<SpriteRenderer>();
     _currentAmmo = _maxAmmo;
+    _cameraShake = GameObject.Find("Main_Cam").GetComponent<DizzyCam>(); //get dizzycam script from Main Camera
 
     if (_spawnManager == null)
     {
@@ -73,6 +77,11 @@ public class Player : MonoBehaviour
     if(_uiManager == null)
     {
       Debug.LogError("The UI Manager is NULL.");
+    }
+
+    if(_cameraShake == null)
+    {
+      Debug.LogError("camerashake is null!");
     }
 
     if (_audioSource == null)
@@ -141,25 +150,25 @@ public class Player : MonoBehaviour
     }
   }
 
-IEnumerator ThrusterCoolDownRoutine()
-{
-  yield return new WaitForSeconds(3f);
-  _fuelCooldownActive = true;
-
-  while(true)
+  IEnumerator ThrusterCoolDownRoutine()
   {
-    _fuel += 15 * Time.deltaTime;
+    yield return new WaitForSeconds(3f);
+    _fuelCooldownActive = true;
 
-    if (_fuel >= 100f)
+    while(true)
     {
-      _fuelCooldownActive = false;
-      break;
-    }
+      _fuel += 15 * Time.deltaTime;
 
-    _uiManager.UpdateThrusterFuel(_fuel);
-    yield return new WaitForSeconds(15 * Time.deltaTime);
+      if (_fuel >= 100f)
+      {
+        _fuelCooldownActive = false;
+        break;
+      }
+
+      _uiManager.UpdateThrusterFuel(_fuel);
+      yield return new WaitForSeconds(15 * Time.deltaTime);
+    }
   }
-}
 
   void FireLaser()
   {
@@ -216,6 +225,8 @@ IEnumerator ThrusterCoolDownRoutine()
     }
 
     _lives--;
+    _cameraShake.TakeDamage(); //start take damage method from dizzycam script
+    
 
     if(_lives == 2)
     {

@@ -396,7 +396,7 @@ MonoBehaviour:
   _thruster: {fileID: 1355833374}
   _laserPrefab: {fileID: 5798895930810506990, guid: 1f71897031d6a7e40932d9adf8a806d8, type: 3}
   _tripleShotPrefab: {fileID: 1746938632204533163, guid: eb6d42aeaf40fd746a8c39815fd9b109, type: 3}
-  _loveShotPrefab: {fileID: 1073247592703550770, guid: f03c872ea393efb4dac9625f1b6dc63e, type: 3}
+  _loveShotPrefab: {fileID: 2370376406490398448, guid: f03c872ea393efb4dac9625f1b6dc63e, type: 3}
   _isLoveShotActive: 0
   _shieldVisualizer: {fileID: 121124235}
   _shieldLife: 0
@@ -1408,8 +1408,9 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 6
-  m_Name: Main Camera
+  m_Name: Main_Cam
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1541,6 +1542,18 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1de4b3e621412b4191b5c24e9f10629, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &971040213
 GameObject:
   m_ObjectHideFlags: 0

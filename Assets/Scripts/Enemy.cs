@@ -6,6 +6,8 @@ public class Enemy : MonoBehaviour
 {
   [SerializeField]
   private float _speed = 4.0f;
+  private float _halfSpeed = 2.0f;
+  private int movementTypeID;
   
   [SerializeField]
   private GameObject _laserPrefab;
@@ -19,6 +21,7 @@ public class Enemy : MonoBehaviour
 
   void Start()
   {
+    movementTypeID = Random.Range(1,4);
     _player = GameObject.Find("Player").GetComponent<Player>();
     
     if (_player == null)
@@ -61,13 +64,27 @@ public class Enemy : MonoBehaviour
     
     void CalculateMovement()
     {
-       transform.Translate (Vector3.down * _speed * Time.deltaTime); 
+      switch (movementTypeID)
+      {
+        case 1:
+          transform.Translate((Vector3.down + Vector3.left) * _halfSpeed * Time.deltaTime);
+          break;
+        case 2:
+          transform.Translate((Vector3.down + Vector3.right) * _halfSpeed * Time.deltaTime);
+          break;
+        case 3: 
+          transform.Translate(Vector3.down * _speed * Time.deltaTime);
+          break;
+        default:
+        break;
+      }
+       //transform.Translate (Vector3.down * _speed * Time.deltaTime); 
 
-        if (transform.position.y < -5f)
-        {
-          float randomX = Random.Range(-8f, 8f);
-          transform.position = new Vector3(randomX, 7, 0);
-        }
+        //if (transform.position.y < -5f)
+        //{
+          //float randomX = Random.Range(-8f, 8f);
+          //transform.position = new Vector3(randomX, 7, 0);
+        //}
     }
 
     private void OnTriggerEnter2D(Collider2D other)

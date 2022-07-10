@@ -14,8 +14,8 @@ public class SpawnManager : MonoBehaviour
     private bool _stopSpawning = false;
     private bool _playerIsAlive = false;
 
-    private int _waveCount = 1;
-    private int _waveMax = 3;
+    //private int _waveCount = 1;
+    //private int _waveMax = 3;
     private int _enemiesInWave = 3;
     private int _enemiesSpawned = 0;
     private int _enemiesAlive = 0;

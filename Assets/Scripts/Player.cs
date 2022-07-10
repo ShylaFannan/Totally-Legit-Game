@@ -22,8 +22,10 @@ public class Player : MonoBehaviour
   [SerializeField]
   private GameObject _loveShotPrefab; 
 
+
   private bool _isTripleShotActive = false;
-  public bool _isLoveShotActive = false;
+  private bool _isLoveShotActive = false;
+  
 
   private bool _isShieldActive = false;
   [SerializeField]
@@ -53,8 +55,10 @@ public class Player : MonoBehaviour
   [SerializeField]
   private int _maxAmmo = 15; //how much ammo player can possibly get
   private int _minAmmo = 0; //can't shoot when reach this number
-  [SerializeField]
-  private GameObject _ammoCollectPrefab;
+  //[SerializeField]
+  //private GameObject _ammoCollectPrefab;
+  //[SerializeField]
+  //private GameObject _ammoCutPrefab;
 
   private DizzyCam _cameraShake; //references camera gameobject
 
@@ -249,6 +253,7 @@ public class Player : MonoBehaviour
   public void TripleShotActive()
   {
     _isTripleShotActive = true;
+    _currentAmmo += 10;
     StartCoroutine(TripleShotPowerDownRoutine());
   }
 
@@ -261,6 +266,7 @@ public class Player : MonoBehaviour
   public void LoveShotActive()
   {
     _isLoveShotActive = true;
+    _currentAmmo += 5;
     StartCoroutine(LoveShotPowerDownRoutine());
   }
 
@@ -310,6 +316,12 @@ public class Player : MonoBehaviour
   {
     _currentAmmo = 15;
     _uiManager.UpdateAmmo(_currentAmmo); //get current ammo from UIManager script
+  }
+
+  public void AmmoCut()
+  {
+    _currentAmmo = 0;
+    _uiManager.UpdateAmmo(_currentAmmo);
   }
 
   public void Plus1Life()

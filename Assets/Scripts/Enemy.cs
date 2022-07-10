@@ -19,6 +19,9 @@ public class Enemy : MonoBehaviour
   private Animator _anim;
   private AudioSource _audioSource; 
 
+  //[SerializeField]
+  //private SpawnManager _spawnManager;
+
   void Start()
   {
     movementTypeID = Random.Range(1,4);
@@ -28,6 +31,13 @@ public class Enemy : MonoBehaviour
     {
       Debug.LogError("The Player is NULL.");
     }
+
+/*     _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+
+        if(_spawnManager == null)
+        {
+            Debug.LogError("SpawnManager is Null");
+        } */
 
     _anim = GetComponent<Animator>();
 
@@ -78,13 +88,6 @@ public class Enemy : MonoBehaviour
         default:
         break;
       }
-       //transform.Translate (Vector3.down * _speed * Time.deltaTime); 
-
-        //if (transform.position.y < -5f)
-        //{
-          //float randomX = Random.Range(-8f, 8f);
-          //transform.position = new Vector3(randomX, 7, 0);
-        //}
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -98,9 +101,9 @@ public class Enemy : MonoBehaviour
         player.Damage();
       }
 
-      _anim.SetTrigger("OnEnemyDeath");
-      _speed = 0;
-      _audioSource.Play();
+        _anim.SetTrigger("OnEnemyDeath");
+        _speed = 0;
+        _audioSource.Play();
         Destroy(this.gameObject, 2.8f);
       }
       

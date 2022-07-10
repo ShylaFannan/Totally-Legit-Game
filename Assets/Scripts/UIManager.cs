@@ -11,15 +11,22 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TMP_Text _gameOverText;
     [SerializeField]
+    private TMP_Text _restartText;
+    [SerializeField]
+    private TMP_Text _AmmoText;
+    [SerializeField]
+    private TMP_Text _waveText;
+    [SerializeField]
+    private int _waveNumber = 0;
+
+    [SerializeField]
     private Image _LivesImg;
     [SerializeField]
     private Sprite[] _liveSprites;
-    [SerializeField]
-    private TMP_Text _restartText;
+
     [SerializeField]
     private GameManager _gameManager;
-    [SerializeField]
-    private TMP_Text _AmmoText;
+
     [SerializeField]
     private Slider _thrusterSlider;
 
@@ -30,12 +37,26 @@ public class UIManager : MonoBehaviour
         _restartText.gameObject.SetActive(false);
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         _AmmoText.text = "Ammo:" + 15; //start of game Ammo is 15
+        _waveText.text = "";
 
         if(_gameManager == null)
         {
             Debug.LogError("GameManager is Null");
         }
     }
+
+    public void GameStarted()
+    {
+        StartCoroutine(WaveDisplay());
+    }
+
+    IEnumerator WaveDisplay()
+    {
+        _waveNumber ++;
+        _waveText.text = "WAVE " + _waveNumber;
+        yield return new WaitForSeconds(5.0f);
+        _waveText.text = "";
+    }  
 
     public void UpdateThrusterFuel(float value)
     {
@@ -59,7 +80,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateAmmo(int currentAmmo) //updates current ammo text
     {
-        _AmmoText.text = "Ammo:" + currentAmmo.ToString(); //gets current ammo from player and add it to our counter
+        _AmmoText.text = "Ammo:" + currentAmmo.ToString() + "/15"; //gets current ammo from player and add it to our counter
     }
 
     void GameOverSequence()

@@ -76,7 +76,7 @@ public class Enemy : MonoBehaviour
           transform.Translate(Vector3.down * _speed * Time.deltaTime);
           break;
         default:
-        break;
+          break;
       }
     }
 

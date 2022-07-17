@@ -19,6 +19,15 @@ public class Enemy : MonoBehaviour
   private Animator _anim;
   private AudioSource _audioSource; 
 
+  //shield stuff
+  [SerializeField]
+  private GameObject _shield;
+  [SerializeField]
+  private bool _isShieldActive = false;
+  private int _shieldChance;
+  private int _shieldPower;
+  //end shield stuff
+
   void Start()
   {
     movementTypeID = Random.Range(1,4);
@@ -42,6 +51,11 @@ public class Enemy : MonoBehaviour
     {
       Debug.LogError("AudioSource on the player is null!");
     }
+    //shield stuff
+    _isShieldActive = false;
+    _shield.SetActive(false);
+    ShieldCheck();
+    //end shield stuff
   }
 
   void Update()
@@ -62,56 +76,88 @@ public class Enemy : MonoBehaviour
       }
     }
     
-    void CalculateMovement()
+  void CalculateMovement()
+  {
+    switch (movementTypeID)
     {
-      switch (movementTypeID)
-      {
-        case 1:
-          transform.Translate((Vector3.down + Vector3.left) * _halfSpeed * Time.deltaTime);
-          break;
-        case 2:
-          transform.Translate((Vector3.down + Vector3.right) * _halfSpeed * Time.deltaTime);
-          break;
-        case 3: 
-          transform.Translate(Vector3.down * _speed * Time.deltaTime);
-          break;
-        default:
-          break;
-      }
+      case 1:
+        transform.Translate((Vector3.down + Vector3.left) * _halfSpeed * Time.deltaTime);
+        break;
+      case 2:
+        transform.Translate((Vector3.down + Vector3.right) * _halfSpeed * Time.deltaTime);
+        break;
+      case 3: 
+        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        break;
+      default:
+        break;
+    }
+  }
+
+//shield stuff
+  private void ShieldIsActive()
+  {
+    _shieldPower = 1;
+    _isShieldActive = true;
+    _shield.SetActive(true);
+  }
+
+  private void ShieldCheck()
+  {
+    _shieldChance = Random.Range(0, 4);
+    if (_shieldChance == 0)
+    {
+      ShieldIsActive();
+    }
+  }
+
+  IEnumerator ShieldChangeDelay()
+  {
+    yield return new WaitForSeconds(1f);
+    _isShieldActive = false;
+  }
+  //END SHIELD STUFF
+
+  private void OnTriggerEnter2D(Collider2D other)
+  {
+    if (other.tag == "Player")
+    {
+      Player player = other.transform.GetComponent<Player>();
+
+    if (player != null)
+    {
+      player.Damage();
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-      if (other.tag == "Player")
-      {
-        Player player = other.transform.GetComponent<Player>();
-
-      if (player != null)
-      {
-        player.Damage();
-      }
-
-        _anim.SetTrigger("OnEnemyDeath");
-        _speed = 0;
-        _audioSource.Play();
-        Destroy(this.gameObject, 2.8f);
-      }
+      _anim.SetTrigger("OnEnemyDeath");
+      _speed = 0;
+      _audioSource.Play();
+      Destroy(this.gameObject, 2.8f);
+    }
       
-      if (other.tag == "laser")
-      {
-        Destroy(other.gameObject);
-
-        if (_player != null)
-        {
-          _player.AddScore(10);
-        }
-
-        _anim.SetTrigger("OnEnemyDeath");
-        _speed = 0;
-        _audioSource.Play();
-        Destroy(GetComponent<Collider2D>());
-        Destroy(this.gameObject, 2.8f);
-      }
+    if (other.tag == "laser" && _isShieldActive == true) //&& _isShieldActive == true
+    {
+      Destroy(other.gameObject);
+      _shieldPower --; //SHIELD
+      _shield.SetActive(false); //SHIELD
+      StartCoroutine(ShieldChangeDelay()); //SHIELD
+      return; //SHIELD
     }
+
+    if (other.tag == "laser" && _isShieldActive == false)
+    {
+      Destroy(other.gameObject);
+      _anim.SetTrigger("OnEnemyDeath");
+      _speed = 0;
+      _audioSource.Play();
+      Destroy(GetComponent<Collider2D>());
+      Destroy(this.gameObject, 2.8f);
+
+      if (_player != null)
+      {
+        _player.AddScore(10);
+      }
+    } 
+  }
 }
 

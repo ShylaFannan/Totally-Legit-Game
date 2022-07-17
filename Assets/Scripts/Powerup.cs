@@ -29,7 +29,7 @@ public class Powerup : MonoBehaviour
 
             AudioSource.PlayClipAtPoint(_clip, transform.position);
             if (player != null)
-            {
+            { 
                 switch(powerupID)
                 {
                     case 0:
@@ -56,8 +56,8 @@ public class Powerup : MonoBehaviour
                     default:
                         Debug.Log("Default Value");
                         break;
-                }
-            }
+                } 
+            } 
 
             Destroy(this.gameObject);
         }

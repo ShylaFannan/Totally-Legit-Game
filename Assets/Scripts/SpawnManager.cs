@@ -24,6 +24,10 @@ public class SpawnManager : MonoBehaviour
     private UIManager _uiManager;
     private IEnumerator _enemyRoutine;
 
+    //BAL SPAWN
+    private int _spawnValue;
+    private int _randomPowerUp;
+
     void Start()
     {
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
@@ -31,6 +35,12 @@ public class SpawnManager : MonoBehaviour
         {
             Debug.LogError("The UIManager is NULL!!");
         }
+        
+    }
+    void Update()
+    {
+        _spawnValue = Random.Range(0, 100); //BALSPAWN
+        Debug.Log(_spawnValue); //BALSPAWN
     }
 
     public void StartSpawning()
@@ -76,10 +86,40 @@ public class SpawnManager : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
         
         while (_stopSpawning == false)
-        {
+        { //BALSPAWN START
+            switch (_spawnValue < 15 ? "TripShot" : _spawnValue < 30 ? "Speed" : 
+            _spawnValue < 45 ? "Shield" : _spawnValue < 75 ? "AmmoUp" : _spawnValue < 85 ? "Health" :
+            _spawnValue < 95 ? "LoveShot" : _spawnValue < 100 ? "AmmoDown" : "Null")
+            {
+                case "TripShot":
+                    _randomPowerUp = 0;
+                    break;
+                case "Speed":
+                    _randomPowerUp = 1;
+                    break;
+                case "Shield":
+                    _randomPowerUp = 2;
+                    break;
+                case "AmmoUp":
+                    _randomPowerUp = 3;
+                    break;
+                case "Health":
+                    _randomPowerUp = 4;
+                    break;
+                case "LoveShot":
+                    _randomPowerUp = 5;
+                    break;
+                case "AmmoDown":
+                    _randomPowerUp = 6; 
+                    break;
+                case "Null":
+                    _randomPowerUp = 7;
+                    break;
+            } //BALSPAWN END
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            int randomPowerUp = Random.Range(0, 7);
-            Instantiate(powerups[randomPowerUp], posToSpawn, Quaternion.identity);
+            Instantiate(powerups[_randomPowerUp], posToSpawn, Quaternion.identity);
+            //int randomPowerUp = Random.Range(0, 7);
+            //Instantiate(powerups[randomPowerUp], posToSpawn, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(3, 8));
         }
     }

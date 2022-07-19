@@ -99,6 +99,22 @@ public class Enemy : MonoBehaviour
       default:
         break;
     }
+
+    //BOUNDARIES
+    if (transform.position.y <= -8f)
+    {
+      Destroy(this.gameObject);
+    }
+
+    if (transform.position.x > 12.5f)
+    {
+      Destroy(this.gameObject);
+    }
+    else if (transform.position.x <-10.5f)
+    {
+      Destroy(this.gameObject);
+    }
+    //BOUNDARIES
   }
 
 void BaseEnemy()

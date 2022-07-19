@@ -139,9 +139,9 @@ public class Player : MonoBehaviour
       _uiManager.UpdateThrusterFuel(_fuel);
     }
 
-    if (transform.position.y>=0)
+    if (transform.position.y >= 4)
     {
-      transform.position = new Vector3(transform.position.x,0,0);
+      transform.position = new Vector3(transform.position.x,4,0);
     }
     else if (transform.position.y<=-3.8f)
     {
@@ -197,10 +197,10 @@ public class Player : MonoBehaviour
       Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity); //create regular laser
       _audioSource.Play();
     }
-    else //if current ammo is less than 0, log this message
+    /* else //if current ammo is less than 0, log this message
     {
       Debug.Log("Player is out of Ammo");
-    }
+    } */
 
     _currentAmmo --; //minus 1 ammo each time this is called
 

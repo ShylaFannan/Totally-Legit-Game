@@ -11,6 +11,8 @@ public class Enemy : MonoBehaviour
   private int _enemyType; //XXX
   private int movementTypeID;
 
+  //private bool _isPlayerBehind = false; ///
+
   private float _detectionRange = 6f; //XXX
   private int _ramSpeed = 6; //XXX
   
@@ -33,10 +35,16 @@ public class Enemy : MonoBehaviour
   private int _shieldPower;
   //end shield stuff
 
+  [SerializeField]
+  private GameObject _buttLaser;
+  //Vector3 offset = new Vector3(0, 3f, 0)
+
   void Start()
   {
     movementTypeID = Random.Range(1,4);
-    _enemyType = Random.Range(0,2);
+    _enemyType = Random.Range(0,3);
+    //PlayerPosition(); //XXX
+
     _player = GameObject.Find("Player").GetComponent<Player>();
     
     if (_player == null)
@@ -68,6 +76,7 @@ public class Enemy : MonoBehaviour
     {
       CalculateMovement();
       EnemyType();
+      //PlayerPosition(); //XXXX
     }
 
     void EnemyType()
@@ -76,12 +85,33 @@ public class Enemy : MonoBehaviour
       {
         case 0:
           BaseEnemy();
+          Debug.Log("BASE ENEMY");
           break;
         case 1:
           RamEnemy();
+          Debug.Log("RAMMSTEIN");
+          break;
+        case 2:
+          BackwardsEnemy();
+          Debug.Log("BUTT SHOT");
           break;
       }
     }
+
+/*   void PlayerPosition()
+  {
+    float playerYAxis = _player.transform.position.y;
+    float enemyYAxis = transform.position.y;
+
+    if(playerYAxis >= enemyYAxis)
+    {
+      _isPlayerBehind = true;
+    }
+    else
+    {
+      _isPlayerBehind = false;
+    }
+  } */
     
   void CalculateMovement()
   {
@@ -150,6 +180,35 @@ void RamEnemy()
     if(Vector3.Distance(_player.transform.position, transform.position) < _detectionRange)
     {
       transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, _ramSpeed * Time.deltaTime);
+    }
+  }
+
+  void BackwardsEnemy()
+  {
+    if (transform.position.y < _player.transform.position.y && Time.time > _canFire)
+    {
+      _fireRate = Random.Range(2f, 5f);
+      _canFire = Time.time + _fireRate;
+      GameObject enemyLaser = Instantiate(_buttLaser, transform.position, Quaternion.identity);
+      Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+      for (int i = 0; i < lasers.Length; i++)
+      {
+        lasers[i].EnemyButtShot();
+      }
+    }
+
+    else if(Time.time > _canFire)
+    {
+      _fireRate = Random.Range(5f, 10f);
+      _canFire = Time.time + _fireRate;
+      GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+      Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+      for (int i = 0; i < lasers.Length; i++)
+      {
+        lasers[i].AssignEnemyLaser();
+      }
     }
   }
 

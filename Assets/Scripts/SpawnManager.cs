@@ -40,7 +40,6 @@ public class SpawnManager : MonoBehaviour
     void Update()
     {
         _spawnValue = Random.Range(0, 100); //BALSPAWN
-        Debug.Log(_spawnValue); //BALSPAWN
     }
 
     public void StartSpawning()
@@ -53,7 +52,7 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnEnemy()
     {
-        Debug.Log("This actually ran");
+        //Debug.Log("This actually ran");
         yield return new WaitForSeconds(3.0f);
 
         while (_enemiesSpawned < _enemiesInWave && _playerIsAlive == true)

@@ -11,14 +11,50 @@ public class Powerup : MonoBehaviour
     [SerializeField]
     private AudioClip _clip;
 
+    [SerializeField]
+    private bool _canCollectPickup = false;
+
+    private Player _player;
+
+    void Start()
+    {
+        _player = GameObject.Find("Player").GetComponent<Player>();
+    
+        if (_player == null)
+        {
+            Debug.LogError("The Player is NULL.");
+        }
+    }
+
     void Update()
     {
-       transform.Translate (Vector3.down * _speed * Time.deltaTime);
+        if(_canCollectPickup)
+        {
+            if(_player != null)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, _speed * Time.deltaTime);
+                Vector3 dist = _player.transform.position - transform.position;
+                if(dist.magnitude <= 0.5f) StartCoroutine(CollectCoolDown());
+            }
+        }
+
+        else transform.Translate (Vector3.down * _speed * Time.deltaTime);
 
         if (transform.position.y < -6f) 
         {
             Destroy(this.gameObject);
         } 
+    }
+
+    IEnumerator CollectCoolDown()
+    {
+        yield return new WaitForSeconds(5f);
+        _canCollectPickup = false;
+    }
+
+    public void  CanCollectPickup()
+    {
+        _canCollectPickup = true;
     }
 
     private void OnTriggerEnter2D(Collider2D other)

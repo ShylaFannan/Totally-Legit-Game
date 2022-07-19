@@ -55,10 +55,8 @@ public class Player : MonoBehaviour
   [SerializeField]
   private int _maxAmmo = 15; //how much ammo player can possibly get
   private int _minAmmo = 0; //can't shoot when reach this number
-  //[SerializeField]
-  //private GameObject _ammoCollectPrefab;
-  //[SerializeField]
-  //private GameObject _ammoCutPrefab;
+
+  //private GameObject _powerups;
 
   private DizzyCam _cameraShake; //references camera gameobject
 
@@ -107,6 +105,12 @@ public class Player : MonoBehaviour
     if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
     {
       FireLaser();
+    }
+    
+    if(Input.GetKeyDown(KeyCode.C))
+    {
+      var _powerups = GameObject.FindGameObjectWithTag("Powerup").GetComponent<Powerup>();
+      _powerups.CanCollectPickup();
     }
   }
 

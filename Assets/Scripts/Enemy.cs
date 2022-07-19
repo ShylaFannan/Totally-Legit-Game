@@ -7,7 +7,12 @@ public class Enemy : MonoBehaviour
   [SerializeField]
   private float _speed = 4.0f;
   private float _halfSpeed = 2.0f;
+
+  private int _enemyType; //XXX
   private int movementTypeID;
+
+  private float _detectionRange = 6f; //XXX
+  private int _ramSpeed = 6; //XXX
   
   [SerializeField]
   private GameObject _laserPrefab;
@@ -31,6 +36,7 @@ public class Enemy : MonoBehaviour
   void Start()
   {
     movementTypeID = Random.Range(1,4);
+    _enemyType = Random.Range(0,2);
     _player = GameObject.Find("Player").GetComponent<Player>();
     
     if (_player == null)
@@ -61,18 +67,19 @@ public class Enemy : MonoBehaviour
   void Update()
     {
       CalculateMovement();
+      EnemyType();
+    }
 
-      if(Time.time > _canFire)
+    void EnemyType()
+    {
+      switch(_enemyType)
       {
-        _fireRate = Random.Range(5f, 10f);
-        _canFire = Time.time + _fireRate;
-        GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
-        Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
-        
-        for (int i = 0; i < lasers.Length; i++)
-        {
-          lasers[i].AssignEnemyLaser();
-        }
+        case 0:
+          BaseEnemy();
+          break;
+        case 1:
+          RamEnemy();
+          break;
       }
     }
     
@@ -91,6 +98,42 @@ public class Enemy : MonoBehaviour
         break;
       default:
         break;
+    }
+  }
+
+void BaseEnemy()
+  {
+    if(Time.time > _canFire)
+    {
+      _fireRate = Random.Range(5f, 10f);
+      _canFire = Time.time + _fireRate;
+      GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+      Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+        
+      for (int i = 0; i < lasers.Length; i++)
+      {
+        lasers[i].AssignEnemyLaser();
+      }
+    }
+  }
+
+void RamEnemy()
+  {
+    if(Time.time > _canFire)
+    {
+      _fireRate = Random.Range(4f, 6f);
+      _canFire = Time.time + _fireRate;
+      GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+      Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+      for (int i = 0; i < lasers.Length; i++)
+      {
+        lasers[i].AssignEnemyLaser();
+      }
+    }
+    if(Vector3.Distance(_player.transform.position, transform.position) < _detectionRange)
+    {
+      transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, _ramSpeed * Time.deltaTime);
     }
   }
 

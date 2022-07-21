@@ -37,6 +37,8 @@ public class Enemy : MonoBehaviour
 
   [SerializeField]
   private GameObject _buttLaser;
+  [SerializeField]
+  private GameObject _hateShot;
   //Vector3 offset = new Vector3(0, 3f, 0)
 
   private bool _laserDetected = false;
@@ -87,7 +89,7 @@ public class Enemy : MonoBehaviour
 
     void EnemyType()
     {
-      switch(_enemyType < 50 ? "Base" : _enemyType < 60 ? "Ram" : _enemyType < 75 ? "Butt" : _enemyType < 100 ? "Dodge" : "Null")
+      switch(_enemyType < 45 ? "Base" : _enemyType < 55 ? "Ram" : _enemyType < 75 ? "Butt" : _enemyType < 95 ? "Dodge" : _enemyType < 100 ? "Hate" : "Null")
       {
         case "Base":
           BaseEnemy();
@@ -104,6 +106,10 @@ public class Enemy : MonoBehaviour
         case "Dodge":
           Dodger();
           Debug.Log("IT'S GONNA DODGE FOOL");
+          break;
+        case "Hate":
+          HateEnemy();
+          Debug.Log("HATE");
           break;
         case "Null":
           Debug.Log("ENEMY SPAWN IS NULL");
@@ -196,6 +202,21 @@ void RamEnemy()
     }
   }
 
+  void HateEnemy()
+  {
+    if(Time.time > _canFire)
+    {
+      _fireRate = Random.Range(4f, 6f);
+      _canFire = Time.time + _fireRate;
+      GameObject enemyLaser = Instantiate(_hateShot, transform.position, Quaternion.identity);
+      Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+      for (int i = 0; i < lasers.Length; i++)
+      {
+        lasers[i].AssignEnemyLaser();
+      }
+    }
+  }
   void BackwardsEnemy()
   {
     if (transform.position.y < _player.transform.position.y && Time.time > _canFire)

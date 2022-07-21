@@ -57,6 +57,7 @@ MonoBehaviour:
   _shield: {fileID: 495129324127868577}
   _isShieldActive: 0
   _buttLaser: {fileID: 7318992962957474871, guid: f18894f547fb07e44a22703234877ca2, type: 3}
+  _hateShot: {fileID: 2871082955205429719, guid: 709f7b722ad238242b458cf5466efcf9, type: 3}
   _detector: {fileID: 2869446678429105063, guid: a14df8d7f21331549b9727ac983481a5, type: 3}
 --- !u!212 &534450928031898957
 SpriteRenderer:

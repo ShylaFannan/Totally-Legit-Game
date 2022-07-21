@@ -97,5 +97,11 @@ public class Powerup : MonoBehaviour
 
             Destroy(this.gameObject);
         }
+
+        if(other.tag == "EvilLaser")
+        {
+            _speed = 0f;
+            Destroy(this.gameObject);
+        }
     }
 }

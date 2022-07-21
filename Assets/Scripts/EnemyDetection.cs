@@ -9,7 +9,12 @@ public class EnemyDetection : MonoBehaviour
         if(other.tag == "laser")
         {
             transform.parent.GetComponent<Enemy>().LaserFound(true);
-            Debug.Log("Laser detected");
+        }
+        
+        if(other.tag == "Powerup")
+        {
+            transform.parent.GetComponent<Enemy>().PowDetected();
+            Debug.Log("KEEL THE POWERUP");
         }
     }
 

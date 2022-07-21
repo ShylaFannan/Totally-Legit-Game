@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour
 
   void Start()
   {
-    _ranNum = Random.Range(0,2) * 2-1;
+    _ranNum = Random.Range(0,2); //* 2-1
     movementTypeID = Random.Range(1,4);
     _enemyType = Random.Range(0,100);
     //PlayerPosition(); //XXX
@@ -87,7 +87,7 @@ public class Enemy : MonoBehaviour
 
     void EnemyType()
     {
-      switch(_enemyType < 10 ? "Base" : _enemyType < 11 ? "Ram" : _enemyType < 50 ? "Butt" : _enemyType < 100 ? "Dodge" : "Null")
+      switch(_enemyType < 50 ? "Base" : _enemyType < 60 ? "Ram" : _enemyType < 75 ? "Butt" : _enemyType < 100 ? "Dodge" : "Null")
       {
         case "Base":
           BaseEnemy();
@@ -251,6 +251,16 @@ void RamEnemy()
     _laserDetected = status;
   }
 
+  public void PowDetected()
+  {
+    GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+    Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+    for (int i = 0; i < lasers.Length; i++)
+    {
+      lasers[i].AssignEnemyLaser();
+    }
+  }
 //shield stuff
   private void ShieldIsActive()
   {

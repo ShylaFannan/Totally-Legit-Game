@@ -10,6 +10,7 @@ TagManager:
   - love
   - thrust
   - Powerup
+  - EvilLaser
   layers:
   - Default
   - TransparentFX

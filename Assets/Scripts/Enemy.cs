@@ -39,10 +39,16 @@ public class Enemy : MonoBehaviour
   private GameObject _buttLaser;
   //Vector3 offset = new Vector3(0, 3f, 0)
 
+  private bool _laserDetected = false;
+  private int _ranNum;
+  [SerializeField]
+  private GameObject _detector;
+
   void Start()
   {
+    _ranNum = Random.Range(0,2) * 2-1;
     movementTypeID = Random.Range(1,4);
-    _enemyType = Random.Range(0,3);
+    _enemyType = Random.Range(0,100);
     //PlayerPosition(); //XXX
 
     _player = GameObject.Find("Player").GetComponent<Player>();
@@ -81,19 +87,26 @@ public class Enemy : MonoBehaviour
 
     void EnemyType()
     {
-      switch(_enemyType)
+      switch(_enemyType < 10 ? "Base" : _enemyType < 11 ? "Ram" : _enemyType < 50 ? "Butt" : _enemyType < 100 ? "Dodge" : "Null")
       {
-        case 0:
+        case "Base":
           BaseEnemy();
           Debug.Log("BASE ENEMY");
           break;
-        case 1:
+        case "Ram":
           RamEnemy();
           Debug.Log("RAMMSTEIN");
           break;
-        case 2:
+        case "Butt":
           BackwardsEnemy();
           Debug.Log("BUTT SHOT");
+          break;
+        case "Dodge":
+          Dodger();
+          Debug.Log("IT'S GONNA DODGE FOOL");
+          break;
+        case "Null":
+          Debug.Log("ENEMY SPAWN IS NULL");
           break;
       }
     }
@@ -210,6 +223,32 @@ void RamEnemy()
         lasers[i].AssignEnemyLaser();
       }
     }
+  }
+
+  void Dodger()
+  {
+    if(Time.time > _canFire)
+    {
+      _fireRate = Random.Range(5f, 10f);
+      _canFire = Time.time + _fireRate;
+      GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+      Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+      for (int i = 0; i < lasers.Length; i++)
+      {
+        lasers[i].AssignEnemyLaser();
+      }
+    }
+
+    if(_laserDetected)
+    {
+      transform.Translate(new Vector3(_ranNum * 5, -1, 0) * _speed * Time.deltaTime);
+    }
+  }
+
+  public void LaserFound(bool status)
+  {
+    _laserDetected = status;
   }
 
 //shield stuff

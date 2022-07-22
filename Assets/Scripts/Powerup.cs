@@ -6,7 +6,7 @@ public class Powerup : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 3.0f;
-    [SerializeField]//ID FOR POWERUPS 0=trip shot 1=speed 2=shield 3=ammo collect 4=health collect 5=loveshot 6=ammocut
+    [SerializeField]//ID FOR POWERUPS 0=trip shot 1=speed 2=shield 3=ammo collect 4=health collect 5=loveshot 6=ammocut 7=homemissile
     private int powerupID;
     [SerializeField]
     private AudioClip _clip;
@@ -88,6 +88,9 @@ public class Powerup : MonoBehaviour
                         break;
                     case 6:
                         player.AmmoCut();
+                        break;
+                    case 7:
+                        player.HomeActive();
                         break;
                     default:
                         Debug.Log("Default Value");

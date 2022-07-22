@@ -20,11 +20,14 @@ public class Player : MonoBehaviour
   [SerializeField]
   private GameObject _tripleShotPrefab;
   [SerializeField]
-  private GameObject _loveShotPrefab; 
+  private GameObject _loveShotPrefab;
+  [SerializeField]
+  private GameObject _homingMissilePrefab;
 
 
   private bool _isTripleShotActive = false;
   private bool _isLoveShotActive = false;
+  private bool _missileActive = false;
   
 
   private bool _isShieldActive = false;
@@ -59,6 +62,7 @@ public class Player : MonoBehaviour
   //private GameObject _powerups;
 
   private DizzyCam _cameraShake; //references camera gameobject
+  
 
 
   void Start()
@@ -192,6 +196,11 @@ public class Player : MonoBehaviour
       Instantiate(_loveShotPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity); //create love shot
       _audioSource.Play();
     }
+    else if(_missileActive == true && _currentAmmo > _minAmmo)
+    {
+      Instantiate(_homingMissilePrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+      _audioSource.Play();
+    }
     else if (_currentAmmo > _minAmmo) //special shots not active but is current ammo greater than 0?
     {
       Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity); //create regular laser
@@ -280,6 +289,18 @@ public class Player : MonoBehaviour
     _isLoveShotActive = false;
   }
 
+  public void HomeActive()
+  {
+    _missileActive = true;
+    _currentAmmo ++;
+    StartCoroutine(HomeMissilePowerDownRoutine());
+  }
+
+  IEnumerator HomeMissilePowerDownRoutine()
+  {
+    yield return new WaitForSeconds(3.0f);
+    _missileActive = false; 
+  }
 
   public void SpeedBoostActive()
   {

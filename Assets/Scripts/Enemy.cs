@@ -323,7 +323,7 @@ void RamEnemy()
       Destroy(this.gameObject, 2.8f);
     }
       
-    if (other.tag == "laser" && _isShieldActive == true) //&& _isShieldActive == true
+    if (other.tag == "laser" && _isShieldActive == true || other.tag == "Missile" && _isShieldActive == true) //&& _isShieldActive == true
     {
       Destroy(other.gameObject);
       _shieldPower --; //SHIELD
@@ -332,7 +332,7 @@ void RamEnemy()
       return; //SHIELD
     }
 
-    if (other.tag == "laser" && _isShieldActive == false)
+    if (other.tag == "laser" && _isShieldActive == false || other.tag == "Missile" && _isShieldActive == false)
     {
       Destroy(other.gameObject);
       _anim.SetTrigger("OnEnemyDeath");

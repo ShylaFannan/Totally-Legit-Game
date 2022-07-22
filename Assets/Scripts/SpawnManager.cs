@@ -86,9 +86,9 @@ public class SpawnManager : MonoBehaviour
         
         while (_stopSpawning == false)
         { //BALSPAWN START
-            switch (_spawnValue < 15 ? "TripShot" : _spawnValue < 30 ? "Speed" : 
-            _spawnValue < 45 ? "Shield" : _spawnValue < 75 ? "AmmoUp" : _spawnValue < 85 ? "Health" :
-            _spawnValue < 95 ? "LoveShot" : _spawnValue < 100 ? "AmmoDown" : "Null")
+            switch (_spawnValue < 20 ? "TripShot" : _spawnValue < 40 ? "Speed" : 
+            _spawnValue < 55 ? "Shield" : _spawnValue < 70 ? "AmmoUp" : _spawnValue < 80 ? "Health" :
+            _spawnValue < 90 ? "LoveShot" : _spawnValue < 94 ? "AmmoDown" : _spawnValue < 100 ? "Home" : "Null")
             {
                 case "TripShot":
                     _randomPowerUp = 0;
@@ -111,8 +111,11 @@ public class SpawnManager : MonoBehaviour
                 case "AmmoDown":
                     _randomPowerUp = 6; 
                     break;
-                case "Null":
+                case "Home":
                     _randomPowerUp = 7;
+                    break;
+                case "Null":
+                    _randomPowerUp = 8;
                     break;
             } //BALSPAWN END
             Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);

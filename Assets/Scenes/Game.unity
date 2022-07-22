@@ -400,6 +400,7 @@ MonoBehaviour:
   _laserPrefab: {fileID: 5798895930810506990, guid: 1f71897031d6a7e40932d9adf8a806d8, type: 3}
   _tripleShotPrefab: {fileID: 1746938632204533163, guid: eb6d42aeaf40fd746a8c39815fd9b109, type: 3}
   _loveShotPrefab: {fileID: 2370376406490398448, guid: f03c872ea393efb4dac9625f1b6dc63e, type: 3}
+  _homingMissilePrefab: {fileID: 1516498877847963948, guid: 28aa250777b8f1348af05c5c89b00694, type: 3}
   _shieldVisualizer: {fileID: 121124235}
   _shieldLife: 0
   _lives: 3
@@ -2276,6 +2277,7 @@ MonoBehaviour:
   - {fileID: 1138761868133599608, guid: df09112d52141e64fb4f42d737c29daf, type: 3}
   - {fileID: 5270899315832522683, guid: d9d29efd10ff8754da49ceb0721fb3d6, type: 3}
   - {fileID: 7704398830113885399, guid: 74b6316cf2eab31418caf8d3fee78623, type: 3}
+  - {fileID: 8425838958435359407, guid: 461cf2c49770d844198db47cb9582936, type: 3}
   _uiManager: {fileID: 0}
 --- !u!4 &1753299694
 Transform:
